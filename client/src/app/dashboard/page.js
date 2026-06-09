@@ -12,6 +12,10 @@ import {
   Pie,
   Tooltip,
   ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
 } from "recharts";
 export default function Dashboard() {
   const router = useRouter();
@@ -323,6 +327,59 @@ export default function Dashboard() {
           </p>
         </div>
       )}
+      {stockData?.profile && (
+        <div className="bg-slate-900 p-6 rounded-xl mb-8">
+          <div className="flex items-center gap-4 mb-4">
+            {stockData.profile.logo && (
+              <img
+                src={stockData.profile.logo}
+                alt={stockData.profile.name}
+                className="w-14 h-14 rounded-full bg-white p-1"
+              />
+            )}
+
+            <div>
+              <h2 className="text-3xl font-bold">
+                {stockData.profile.name}
+              </h2>
+
+              <p className="text-slate-400">
+                {stockData.profile.ticker} • {stockData.profile.exchange}
+              </p>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-4">
+            <div className="bg-slate-800 p-4 rounded-lg">
+              <p className="text-slate-400">Industry</p>
+              <p className="font-semibold">
+                {stockData.profile.industry || "N/A"}
+              </p>
+            </div>
+
+            <div className="bg-slate-800 p-4 rounded-lg">
+              <p className="text-slate-400">Country</p>
+              <p className="font-semibold">
+                {stockData.profile.country || "N/A"}
+              </p>
+            </div>
+
+            <div className="bg-slate-800 p-4 rounded-lg">
+              <p className="text-slate-400">Market Cap</p>
+              <p className="font-semibold">
+                ${stockData.profile.marketCapitalization}M
+              </p>
+            </div>
+
+            <div className="bg-slate-800 p-4 rounded-lg">
+              <p className="text-slate-400">IPO</p>
+              <p className="font-semibold">
+                {stockData.profile.ipo || "N/A"}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
       {stockData && (
         <div className="bg-slate-900 p-6 rounded-xl mb-8">
           <h2 className="text-2xl font-bold mb-4">
@@ -367,6 +424,39 @@ export default function Dashboard() {
                 ${stockData.quote.previousClose}
               </p>
             </div>
+          </div>
+        </div>
+      )}
+      {stockData?.chartData?.length > 0 && (
+        <div className="bg-slate-900 p-6 rounded-xl mb-8">
+          <h2 className="text-2xl font-bold mb-4">
+            30-Day Price Trend
+          </h2>
+
+          <div className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={stockData.chartData}>
+                <XAxis
+                  dataKey="date"
+                  tick={{ fill: "#cbd5e1", fontSize: 12 }}
+                />
+
+                <YAxis
+                  tick={{ fill: "#cbd5e1", fontSize: 12 }}
+                  domain={["auto", "auto"]}
+                />
+
+                <Tooltip />
+
+                <Line
+                  type="monotone"
+                  dataKey="close"
+                  stroke="#3b82f6"
+                  strokeWidth={3}
+                  dot={false}
+                />
+              </LineChart>
+            </ResponsiveContainer>
           </div>
         </div>
       )}
