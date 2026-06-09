@@ -229,307 +229,354 @@ export default function Dashboard() {
     },
   ];
   return (
-    <div className="min-h-screen bg-slate-950 text-white p-10">
-      <h1 className="text-4xl font-bold mb-2">
-        FinSight Dashboard
-      </h1>
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-blue-950 to-slate-950 text-white">
 
-      {user && (
-        <p className="mb-8 text-slate-400">
-          Welcome {user.name}
-        </p>
-      )}
-      <div className="flex gap-3 mb-6">
-        <Link href="/compare">
-          <button className="px-4 py-2 bg-purple-600 rounded-lg hover:bg-purple-700">
-            Compare Companies
-          </button>
-        </Link>
+      {/* Header */}
+      <header className="sticky top-0 z-40 backdrop-blur-md bg-slate-950/80 border-b border-slate-800/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              FinSight Dashboard
+            </h1>
+            {user && <p className="text-slate-400 text-sm mt-1">Welcome, {user.name}</p>}
+          </div>
 
-        <button
-          onClick={logout}
-          className="px-4 py-2 bg-red-600 rounded-lg hover:bg-red-700"
-        >
-          Logout
-        </button>
-      </div>
-      {watchlist.length > 0 && (
-        <div className="bg-slate-900 p-6 rounded-xl mb-8">
-          <h2 className="text-2xl font-bold mb-4">
-            My Watchlist
-          </h2>
+          <div className="flex gap-2 sm:gap-4">
+            <Link href="/compare">
+              <button className="px-3 sm:px-4 py-2 bg-purple-600/20 border border-purple-600/50 rounded-lg hover:bg-purple-600/30 transition text-sm sm:text-base">
+                Compare
+              </button>
+            </Link>
 
-          <div className="flex flex-wrap gap-3">
-            {watchlist.map((company, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-2 bg-slate-800 rounded-lg px-4 py-2"
-              >
-                <button onClick={() => searchCompany(company)}>
-                  {company}
-                </button>
-
-                <button
-                  onClick={() => removeFromWatchlist(company)}
-                  className="text-red-400 font-bold"
-                >
-                  ×
-                </button>
-              </div>
-            ))}
+            <button
+              onClick={logout}
+              className="px-3 sm:px-4 py-2 bg-red-600/20 border border-red-600/50 rounded-lg hover:bg-red-600/30 transition text-sm sm:text-base"
+            >
+              Logout
+            </button>
           </div>
         </div>
-      )}
-      <SearchBar
-        onSearch={searchCompany}
-      />
-      {!loading &&
-        articles.length === 0 &&
-        !summary && (
-          <div className="bg-slate-900 p-8 rounded-xl text-center">
+      </header>
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        {/* Search Section */}
+        <div className="mb-8">
+          <SearchBar onSearch={searchCompany} />
+        </div>
+
+        {/* Watchlist */}
+        {watchlist.length > 0 && (
+          <div className="card mb-8">
+            <h2 className="text-xl sm:text-2xl font-bold mb-4">
+              📌 My Watchlist
+            </h2>
+
+            <div className="flex flex-wrap gap-3">
+              {watchlist.map((company, index) => (
+                <div
+                  key={index}
+                  className="inline-flex items-center gap-2 card p-3 hover:scale-105 transition"
+                >
+                  <button
+                    onClick={() => searchCompany(company)}
+                    className="font-medium hover:text-blue-400 transition"
+                  >
+                    {company}
+                  </button>
+
+                  <button
+                    onClick={() => removeFromWatchlist(company)}
+                    className="text-red-400 hover:text-red-300 font-bold transition"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Empty State */}
+        {!loading && articles.length === 0 && !summary && (
+          <div className="card text-center py-12">
+            <div className="text-4xl mb-4">🔍</div>
             <h2 className="text-2xl font-bold mb-2">
               Search a Company
             </h2>
 
-            <p className="text-slate-400">
-              Enter a company name to view news,
-              sentiment analysis and AI insights.
+            <p className="text-slate-400 max-w-md mx-auto">
+              Enter a company name or ticker symbol to view news, sentiment analysis, and AI insights.
             </p>
           </div>
         )}
-      {currentCompany && (
-        <button
-          onClick={addToWatchlist}
-          className="mb-8 px-5 py-3 bg-purple-600 rounded-lg"
-        >
-          Add {currentCompany} to Watchlist
-        </button>
-      )}
-      {loading && (
-        <div className="bg-slate-900 p-6 rounded-xl mb-8">
-          <h2 className="text-xl font-semibold text-blue-400">
-            Analyzing market sentiment...
-          </h2>
 
-          <p className="text-slate-400 mt-2">
-            Fetching news, generating AI summary, and running FinBERT analysis.
-          </p>
-        </div>
-      )}
-      {currentCompany && (
-        <div className="mb-6">
-          <h2 className="text-4xl font-bold">
-            {currentCompany.toUpperCase()}
-          </h2>
-
-          <p className="text-slate-400 mt-2">
-            Financial Research Dashboard
-          </p>
-        </div>
-      )}
-      {stockData?.profile && (
-        <div className="bg-slate-900 p-6 rounded-xl mb-8">
-          <div className="flex items-center gap-4 mb-4">
-            {stockData.profile.logo && (
-              <img
-                src={stockData.profile.logo}
-                alt={stockData.profile.name}
-                className="w-14 h-14 rounded-full bg-white p-1"
-              />
-            )}
-
-            <div>
-              <h2 className="text-3xl font-bold">
-                {stockData.profile.name}
-              </h2>
-
-              <p className="text-slate-400">
-                {stockData.profile.ticker} • {stockData.profile.exchange}
-              </p>
+        {/* Loading State */}
+        {loading && (
+          <div className="card">
+            <div className="flex items-center gap-3">
+              <div className="animate-spin">⚙️</div>
+              <div>
+                <h2 className="text-lg font-semibold text-blue-400">
+                  Analyzing market sentiment...
+                </h2>
+                <p className="text-slate-400 text-sm mt-1">
+                  Fetching news, generating AI summary, and running FinBERT analysis.
+                </p>
+              </div>
             </div>
           </div>
+        )}
 
-          <div className="grid md:grid-cols-4 gap-4">
-            <div className="bg-slate-800 p-4 rounded-lg">
-              <p className="text-slate-400">Industry</p>
-              <p className="font-semibold">
-                {stockData.profile.industry || "N/A"}
-              </p>
-            </div>
-
-            <div className="bg-slate-800 p-4 rounded-lg">
-              <p className="text-slate-400">Country</p>
-              <p className="font-semibold">
-                {stockData.profile.country || "N/A"}
-              </p>
-            </div>
-
-            <div className="bg-slate-800 p-4 rounded-lg">
-              <p className="text-slate-400">Market Cap</p>
-              <p className="font-semibold">
-                ${stockData.profile.marketCapitalization}M
-              </p>
-            </div>
-
-            <div className="bg-slate-800 p-4 rounded-lg">
-              <p className="text-slate-400">IPO</p>
-              <p className="font-semibold">
-                {stockData.profile.ipo || "N/A"}
-              </p>
-            </div>
+        {/* Company Header */}
+        {currentCompany && !loading && (
+          <div className="mb-8">
+            <h2 className="text-3xl sm:text-4xl font-bold">
+              {currentCompany.toUpperCase()}
+            </h2>
+            <p className="text-slate-400 mt-2">
+              Financial Research Dashboard
+            </p>
           </div>
-        </div>
-      )}
-      {stockData && (
-        <div className="bg-slate-900 p-6 rounded-xl mb-8">
-          <h2 className="text-2xl font-bold mb-4">
-            Stock Overview: {stockData.symbol}
-          </h2>
+        )}
 
-          <div className="grid md:grid-cols-4 gap-4">
-            <div className="bg-slate-800 p-4 rounded-lg">
-              <p className="text-slate-400">Current Price</p>
-              <p className="text-2xl font-bold">
-                ${stockData.quote.current}
-              </p>
-            </div>
-
-            <div className="bg-slate-800 p-4 rounded-lg">
-              <p className="text-slate-400">Change</p>
-              <p
-                className={`text-2xl font-bold ${stockData.quote.change >= 0
-                  ? "text-green-400"
-                  : "text-red-400"
-                  }`}
-              >
-                {stockData.quote.change}
-              </p>
-            </div>
-
-            <div className="bg-slate-800 p-4 rounded-lg">
-              <p className="text-slate-400">% Change</p>
-              <p
-                className={`text-2xl font-bold ${stockData.quote.percentChange >= 0
-                  ? "text-green-400"
-                  : "text-red-400"
-                  }`}
-              >
-                {stockData.quote.percentChange}%
-              </p>
-            </div>
-
-            <div className="bg-slate-800 p-4 rounded-lg">
-              <p className="text-slate-400">Previous Close</p>
-              <p className="text-2xl font-bold">
-                ${stockData.quote.previousClose}
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-      {stockData?.chartData?.length > 0 && (
-        <div className="bg-slate-900 p-6 rounded-xl mb-8">
-          <h2 className="text-2xl font-bold mb-4">
-            30-Day Price Trend
-          </h2>
-
-          <div className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={stockData.chartData}>
-                <XAxis
-                  dataKey="date"
-                  tick={{ fill: "#cbd5e1", fontSize: 12 }}
+        {/* Stock Profile Card */}
+        {stockData?.profile && (
+          <div className="card mb-8">
+            <div className="flex items-center gap-4 mb-6">
+              {stockData.profile.logo && (
+                <img
+                  src={stockData.profile.logo}
+                  alt={stockData.profile.name}
+                  className="w-16 h-16 rounded-full bg-white p-2"
                 />
+              )}
 
-                <YAxis
-                  tick={{ fill: "#cbd5e1", fontSize: 12 }}
-                  domain={["auto", "auto"]}
-                />
+              <div>
+                <h3 className="text-2xl font-bold">
+                  {stockData.profile.name}
+                </h3>
 
-                <Tooltip />
+                <p className="text-slate-400">
+                  {stockData.profile.ticker} • {stockData.profile.exchange}
+                </p>
+              </div>
+            </div>
 
-                <Line
-                  type="monotone"
-                  dataKey="close"
-                  stroke="#3b82f6"
-                  strokeWidth={3}
-                  dot={false}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="bg-slate-800/50 p-4 rounded-lg">
+                <p className="text-slate-400 text-sm">Industry</p>
+                <p className="font-semibold">
+                  {stockData.profile.industry || "N/A"}
+                </p>
+              </div>
+
+              <div className="bg-slate-800/50 p-4 rounded-lg">
+                <p className="text-slate-400 text-sm">Country</p>
+                <p className="font-semibold">
+                  {stockData.profile.country || "N/A"}
+                </p>
+              </div>
+
+              <div className="bg-slate-800/50 p-4 rounded-lg">
+                <p className="text-slate-400 text-sm">Market Cap</p>
+                <p className="font-semibold">
+                  ${stockData.profile.marketCapitalization}M
+                </p>
+              </div>
+
+              <div className="bg-slate-800/50 p-4 rounded-lg">
+                <p className="text-slate-400 text-sm">IPO</p>
+                <p className="font-semibold">
+                  {stockData.profile.ipo || "N/A"}
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
-      )}
-      {summary && (
-        <div className="bg-slate-900 p-6 rounded-xl mb-8">
-          <h2 className="text-2xl font-bold mb-3">
-            AI Summary
-          </h2>
+        )}
+        {/* Stock Quote */}
+        {stockData && (
+          <div className="card mb-8">
+            <h2 className="text-xl sm:text-2xl font-bold mb-6">
+              Stock Overview
+            </h2>
 
-          <p className="text-slate-300">
-            {summary}
-          </p>
-        </div>
-      )}
-      {articles.length > 0 && (
-        <div className="bg-slate-900 p-6 rounded-xl mb-8">
-          <h2 className="text-2xl font-bold mb-4">
-            Sentiment Overview
-          </h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="bg-slate-800/50 p-4 rounded-lg">
+                <p className="text-slate-400 text-sm">Current Price</p>
+                <p className="text-2xl font-bold">
+                  ${stockData.quote.current}
+                </p>
+              </div>
 
-          <div className="h-72">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={chartData}
-                  dataKey="value"
-                  nameKey="name"
-                  outerRadius={100}
-                  label
+              <div className="bg-slate-800/50 p-4 rounded-lg">
+                <p className="text-slate-400 text-sm">Change</p>
+                <p
+                  className={`text-2xl font-bold ${stockData.quote.change >= 0
+                    ? "text-green-400"
+                    : "text-red-400"
+                    }`}
                 >
-                </Pie>
+                  {stockData.quote.change >= 0 ? "+" : ""}{stockData.quote.change}
+                </p>
+              </div>
 
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+              <div className="bg-slate-800/50 p-4 rounded-lg">
+                <p className="text-slate-400 text-sm">% Change</p>
+                <p
+                  className={`text-2xl font-bold ${stockData.quote.percentChange >= 0
+                    ? "text-green-400"
+                    : "text-red-400"
+                    }`}
+                >
+                  {stockData.quote.percentChange >= 0 ? "+" : ""}{stockData.quote.percentChange}%
+                </p>
+              </div>
 
-          <div className="grid grid-cols-3 gap-4 mt-4 text-center">
-            <div>
-              <p className="text-green-400 font-bold">
-                {sentimentCounts.positive}
-              </p>
-              <p className="text-slate-400">Positive</p>
-            </div>
-
-            <div>
-              <p className="text-yellow-400 font-bold">
-                {sentimentCounts.neutral}
-              </p>
-              <p className="text-slate-400">Neutral</p>
-            </div>
-
-            <div>
-              <p className="text-red-400 font-bold">
-                {sentimentCounts.negative}
-              </p>
-              <p className="text-slate-400">Negative</p>
+              <div className="bg-slate-800/50 p-4 rounded-lg">
+                <p className="text-slate-400 text-sm">Previous Close</p>
+                <p className="text-2xl font-bold">
+                  ${stockData.quote.previousClose}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-      <div className="grid gap-6">
+        )}
 
-        {articles.map((article, index) => (
-          <NewsCard
-            key={index}
-            article={article}
-            sentiment={article.sentiment}
-          />
-        ))}
+        {/* Add to Watchlist Button */}
+        {currentCompany && !loading && (
+          <div className="mb-8">
+            <button
+              onClick={addToWatchlist}
+              className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-500 rounded-lg font-semibold hover:from-purple-700 hover:to-purple-600 transition"
+            >
+              ⭐ Add {currentCompany} to Watchlist
+            </button>
+          </div>
+        )}
 
-      </div>
+        {/* Stock Chart */}
+        {stockData?.chartData?.length > 0 && (
+          <div className="card mb-8">
+            <h2 className="text-xl sm:text-2xl font-bold mb-6">
+              📈 30-Day Price Trend
+            </h2>
 
+            <div className="w-full overflow-x-auto">
+              <div className="min-w-full h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={stockData.chartData}>
+                    <XAxis
+                      dataKey="date"
+                      tick={{ fill: "#cbd5e1", fontSize: 12 }}
+                    />
+
+                    <YAxis
+                      tick={{ fill: "#cbd5e1", fontSize: 12 }}
+                      domain={["auto", "auto"]}
+                    />
+
+                    <Tooltip contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155" }} />
+
+                    <Line
+                      type="monotone"
+                      dataKey="close"
+                      stroke="#3b82f6"
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* AI Summary */}
+        {summary && (
+          <div className="card mb-8 bg-gradient-to-r from-slate-800 to-slate-900 border-blue-500/30">
+            <h2 className="text-xl sm:text-2xl font-bold mb-4">
+              🤖 AI Summary
+            </h2>
+
+            <p className="text-slate-200 leading-relaxed">
+              {summary}
+            </p>
+          </div>
+        )}
+
+        {/* Sentiment Overview */}
+        {articles.length > 0 && (
+          <div className="card mb-8">
+            <h2 className="text-xl sm:text-2xl font-bold mb-6">
+              📊 Sentiment Overview
+            </h2>
+
+            <div className="grid lg:grid-cols-2 gap-8">
+              <div className="flex justify-center">
+                <div className="h-72 w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={chartData}
+                        dataKey="value"
+                        nameKey="name"
+                        outerRadius={80}
+                        label
+                      >
+                      </Pie>
+
+                      <Tooltip contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155" }} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              <div className="flex flex-col justify-center gap-4">
+                <div className="bg-gradient-to-r from-green-500/10 to-green-600/10 border border-green-500/50 p-4 rounded-lg">
+                  <p className="text-green-400 font-bold text-lg">
+                    {sentimentCounts.positive}
+                  </p>
+                  <p className="text-slate-300">Positive Articles</p>
+                </div>
+
+                <div className="bg-gradient-to-r from-yellow-500/10 to-yellow-600/10 border border-yellow-500/50 p-4 rounded-lg">
+                  <p className="text-yellow-400 font-bold text-lg">
+                    {sentimentCounts.neutral}
+                  </p>
+                  <p className="text-slate-300">Neutral Articles</p>
+                </div>
+
+                <div className="bg-gradient-to-r from-red-500/10 to-red-600/10 border border-red-500/50 p-4 rounded-lg">
+                  <p className="text-red-400 font-bold text-lg">
+                    {sentimentCounts.negative}
+                  </p>
+                  <p className="text-slate-300">Negative Articles</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* News Cards */}
+        {articles.length > 0 && (
+          <div>
+            <h2 className="text-xl sm:text-2xl font-bold mb-6">
+              📰 Latest News
+            </h2>
+
+            <div className="grid gap-4">
+              {articles.map((article, index) => (
+                <NewsCard
+                  key={index}
+                  article={article}
+                  sentiment={article.sentiment}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </main>
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import api from "../../services/api";
 import Link from "next/link";
+import { ArrowLeft, Zap } from "lucide-react";
 import {
     BarChart,
     Bar,
@@ -133,116 +134,169 @@ export default function ComparePage() {
             : [];
 
     return (
-        <div className="min-h-screen bg-slate-950 text-white p-10">
-            <Link href="/dashboard">
-                <button className="mb-6 px-4 py-2 bg-slate-800 rounded-lg hover:bg-slate-700">
-                    ← Back to Dashboard
-                </button>
-            </Link>
-            <h1 className="text-4xl font-bold mb-2">
-                Company Comparison
-            </h1>
+        <div className="min-h-screen bg-gradient-to-b from-slate-950 via-blue-950 to-slate-950 text-white">
 
-            <p className="text-slate-400 mb-8">
-                Compare market sentiment and AI-generated insights for two companies.
-            </p>
+            {/* Header */}
+            <header className="sticky top-0 z-40 backdrop-blur-md bg-slate-950/80 border-b border-slate-800/50">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                    <Link href="/dashboard" className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition">
+                        <ArrowLeft size={20} />
+                        Back to Dashboard
+                    </Link>
+                </div>
+            </header>
 
-            <form
-                onSubmit={handleCompare}
-                className="grid md:grid-cols-3 gap-4 mb-8"
-            >
-                <input
-                    value={companyA}
-                    onChange={(e) => setCompanyA(e.target.value)}
-                    placeholder="First company e.g. NVIDIA"
-                    className="p-3 rounded-lg bg-slate-800"
-                />
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-                <input
-                    value={companyB}
-                    onChange={(e) => setCompanyB(e.target.value)}
-                    placeholder="Second company e.g. AMD"
-                    className="p-3 rounded-lg bg-slate-800"
-                />
-
-                <button className="bg-blue-600 rounded-lg font-semibold">
-                    Compare
-                </button>
-            </form>
-
-            {loading && (
-                <div className="bg-slate-900 p-6 rounded-xl mb-8">
-                    <p className="text-blue-400">
-                        Comparing companies using news, FinBERT sentiment, and AI summaries...
+                {/* Title */}
+                <div className="mb-8">
+                    <h1 className="text-3xl sm:text-4xl font-bold mb-2">
+                        Company Comparison
+                    </h1>
+                    <p className="text-slate-400">
+                        Compare market sentiment and AI-generated insights for two companies side by side.
                     </p>
                 </div>
-            )}
 
-            {resultA && resultB && (
-                <>
-                    <div className="bg-slate-900 p-6 rounded-xl mb-8">
-                        <h2 className="text-2xl font-bold mb-4">
-                            Sentiment Comparison
-                        </h2>
+                {/* Search Form */}
+                <form
+                    onSubmit={handleCompare}
+                    className="card mb-8 p-6"
+                >
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 items-end">
+                        <div>
+                            <label className="block text-sm font-medium text-slate-300 mb-2">
+                                First Company
+                            </label>
+                            <input
+                                type="text"
+                                value={companyA}
+                                onChange={(e) => setCompanyA(e.target.value)}
+                                placeholder="e.g., NVIDIA"
+                                className="w-full"
+                            />
+                        </div>
 
-                        <div className="h-80">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <BarChart data={chartData}>
-                                    <XAxis dataKey="sentiment" />
-                                    <YAxis allowDecimals={false} />
-                                    <Tooltip />
-                                    <Bar dataKey={resultA.company} fill="#2563eb" />
-                                    <Bar dataKey={resultB.company} fill="#9333ea" />
-                                </BarChart>
-                            </ResponsiveContainer>
+                        <div>
+                            <label className="block text-sm font-medium text-slate-300 mb-2">
+                                Second Company
+                            </label>
+                            <input
+                                type="text"
+                                value={companyB}
+                                onChange={(e) => setCompanyB(e.target.value)}
+                                placeholder="e.g., AMD"
+                                className="w-full"
+                            />
+                        </div>
+
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="w-full bg-gradient-to-r from-blue-600 to-blue-500 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-blue-600 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        >
+                            <Zap size={18} />
+                            Compare
+                        </button>
+                    </div>
+                </form>
+
+                {/* Loading State */}
+                {loading && (
+                    <div className="card mb-8">
+                        <div className="flex items-center gap-3">
+                            <div className="animate-spin">⚙️</div>
+                            <div>
+                                <p className="text-blue-400 font-semibold">
+                                    Comparing companies using news, FinBERT sentiment, and AI summaries...
+                                </p>
+                            </div>
                         </div>
                     </div>
+                )}
 
-                    <div className="grid md:grid-cols-2 gap-6">
-                        {[resultA, resultB].map((result) => (
-                            <div
-                                key={result.company}
-                                className="bg-slate-900 p-6 rounded-xl"
-                            >
-                                <h2 className="text-3xl font-bold mb-4">
-                                    {result.company.toUpperCase()}
-                                </h2>
+                {/* Results */}
+                {resultA && resultB && (
+                    <>
+                        {/* Chart */}
+                        <div className="card mb-8">
+                            <h2 className="text-xl sm:text-2xl font-bold mb-6">
+                                📊 Sentiment Comparison Chart
+                            </h2>
 
-                                <div className="grid grid-cols-3 gap-3 mb-6 text-center">
-                                    <div>
-                                        <p className="text-green-400 text-2xl font-bold">
-                                            {result.counts.positive}
-                                        </p>
-                                        <p className="text-slate-400">Positive</p>
+                            <div className="w-full overflow-x-auto">
+                                <div className="min-w-full h-80">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <BarChart data={chartData}>
+                                            <XAxis dataKey="sentiment" tick={{ fill: "#cbd5e1" }} />
+                                            <YAxis allowDecimals={false} tick={{ fill: "#cbd5e1" }} />
+                                            <Tooltip contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #334155" }} />
+                                            <Bar dataKey={resultA.company} fill="#2563eb" />
+                                            <Bar dataKey={resultB.company} fill="#9333ea" />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Comparison Cards */}
+                        <div className="grid md:grid-cols-2 gap-8 mb-8">
+                            {/* Company A */}
+                            <div>
+                                <h3 className="text-2xl font-bold mb-4 text-blue-400">
+                                    {resultA.company}
+                                </h3>
+
+                                <div className="grid grid-cols-3 gap-3 mb-6">
+                                    <div className="bg-gradient-to-br from-green-500/10 to-green-600/10 border border-green-500/50 p-4 rounded-lg text-center">
+                                        <p className="text-green-400 text-2xl font-bold">{resultA.counts.positive}</p>
+                                        <p className="text-slate-400 text-sm">Positive</p>
                                     </div>
-
-                                    <div>
-                                        <p className="text-yellow-400 text-2xl font-bold">
-                                            {result.counts.neutral}
-                                        </p>
-                                        <p className="text-slate-400">Neutral</p>
+                                    <div className="bg-gradient-to-br from-yellow-500/10 to-yellow-600/10 border border-yellow-500/50 p-4 rounded-lg text-center">
+                                        <p className="text-yellow-400 text-2xl font-bold">{resultA.counts.neutral}</p>
+                                        <p className="text-slate-400 text-sm">Neutral</p>
                                     </div>
-
-                                    <div>
-                                        <p className="text-red-400 text-2xl font-bold">
-                                            {result.counts.negative}
-                                        </p>
-                                        <p className="text-slate-400">Negative</p>
+                                    <div className="bg-gradient-to-br from-red-500/10 to-red-600/10 border border-red-500/50 p-4 rounded-lg text-center">
+                                        <p className="text-red-400 text-2xl font-bold">{resultA.counts.negative}</p>
+                                        <p className="text-slate-400 text-sm">Negative</p>
                                     </div>
                                 </div>
 
-                                <h3 className="text-xl font-bold mb-2">
-                                    AI Summary
+                                <div className="card">
+                                    <p className="text-slate-300 leading-relaxed">{resultA.summary}</p>
+                                </div>
+                            </div>
+
+                            {/* Company B */}
+                            <div>
+                                <h3 className="text-2xl font-bold mb-4 text-purple-400">
+                                    {resultB.company}
                                 </h3>
 
-                                <p className="text-slate-300">
-                                    {result.summary}
-                                </p>
+                                <div className="grid grid-cols-3 gap-3 mb-6">
+                                    <div className="bg-gradient-to-br from-green-500/10 to-green-600/10 border border-green-500/50 p-4 rounded-lg text-center">
+                                        <p className="text-green-400 text-2xl font-bold">{resultB.counts.positive}</p>
+                                        <p className="text-slate-400 text-sm">Positive</p>
+                                    </div>
+                                    <div className="bg-gradient-to-br from-yellow-500/10 to-yellow-600/10 border border-yellow-500/50 p-4 rounded-lg text-center">
+                                        <p className="text-yellow-400 text-2xl font-bold">{resultB.counts.neutral}</p>
+                                        <p className="text-slate-400 text-sm">Neutral</p>
+                                    </div>
+                                    <div className="bg-gradient-to-br from-red-500/10 to-red-600/10 border border-red-500/50 p-4 rounded-lg text-center">
+                                        <p className="text-red-400 text-2xl font-bold">{resultB.counts.negative}</p>
+                                        <p className="text-slate-400 text-sm">Negative</p>
+                                    </div>
+                                </div>
+
+                                <div className="card">
+                                    <p className="text-slate-300 leading-relaxed">{resultB.summary}</p>
+                                </div>
                             </div>
-                        ))}
-                    </div>
-                </>
-            )}
+                        </div>
+                    </>
+                )}
+
+            </main>
         </div>
     );
 }
