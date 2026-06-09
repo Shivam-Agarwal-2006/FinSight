@@ -229,13 +229,13 @@ export default function Dashboard() {
     },
   ];
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-blue-950 to-slate-950 text-white">
+    <div className="min-h-screen bg-linear-to-b from-slate-950 via-blue-950 to-slate-950 text-white">
 
       {/* Header */}
       <header className="sticky top-0 z-40 backdrop-blur-md bg-slate-950/80 border-b border-slate-800/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            <h1 className="text-2xl sm:text-3xl font-bold bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
               FinSight Dashboard
             </h1>
             {user && <p className="text-slate-400 text-sm mt-1">Welcome, {user.name}</p>}
@@ -243,14 +243,14 @@ export default function Dashboard() {
 
           <div className="flex gap-2 sm:gap-4">
             <Link href="/compare">
-              <button className="px-3 sm:px-4 py-2 bg-purple-600/20 border border-purple-600/50 rounded-lg hover:bg-purple-600/30 transition text-sm sm:text-base">
+              <button className="px-3 sm:px-4 py-2 bg-purple-600/20 border border-purple-600/50 rounded-lg hover:bg-purple-600/30 transition text-sm sm:text-base cursor-pointer">
                 Compare
               </button>
             </Link>
 
             <button
               onClick={logout}
-              className="px-3 sm:px-4 py-2 bg-red-600/20 border border-red-600/50 rounded-lg hover:bg-red-600/30 transition text-sm sm:text-base"
+              className="px-3 sm:px-4 py-2 bg-red-600/20 border border-red-600/50 rounded-lg hover:bg-red-600/30 transition text-sm sm:text-base cursor-pointer"
             >
               Logout
             </button>
@@ -280,14 +280,14 @@ export default function Dashboard() {
                 >
                   <button
                     onClick={() => searchCompany(company)}
-                    className="font-medium hover:text-blue-400 transition"
+                    className="font-medium hover:text-blue-400 transition cursor-pointer"
                   >
                     {company}
                   </button>
 
                   <button
                     onClick={() => removeFromWatchlist(company)}
-                    className="text-red-400 hover:text-red-300 font-bold transition"
+                    className="text-red-400 hover:text-red-300 font-bold transition cursor-pointer"
                   >
                     ✕
                   </button>
@@ -448,7 +448,7 @@ export default function Dashboard() {
           <div className="mb-8">
             <button
               onClick={addToWatchlist}
-              className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-500 rounded-lg font-semibold hover:from-purple-700 hover:to-purple-600 transition"
+              className="w-full sm:w-auto px-6 py-3 bg-linear-to-r from-purple-600 to-purple-500 rounded-lg font-semibold hover:from-purple-700 hover:to-purple-600 transition cursor-pointer"
             >
               ⭐ Add {currentCompany} to Watchlist
             </button>
@@ -494,7 +494,7 @@ export default function Dashboard() {
 
         {/* AI Summary */}
         {summary && (
-          <div className="card mb-8 bg-gradient-to-r from-slate-800 to-slate-900 border-blue-500/30">
+          <div className="card mb-8 bg-linear-to-r from-slate-800 to-slate-900 border-blue-500/30">
             <h2 className="text-xl sm:text-2xl font-bold mb-4">
               🤖 AI Summary
             </h2>
@@ -533,21 +533,21 @@ export default function Dashboard() {
               </div>
 
               <div className="flex flex-col justify-center gap-4">
-                <div className="bg-gradient-to-r from-green-500/10 to-green-600/10 border border-green-500/50 p-4 rounded-lg">
+                <div className="bg-linear-to-r from-green-500/10 to-green-600/10 border border-green-500/50 p-4 rounded-lg">
                   <p className="text-green-400 font-bold text-lg">
                     {sentimentCounts.positive}
                   </p>
                   <p className="text-slate-300">Positive Articles</p>
                 </div>
 
-                <div className="bg-gradient-to-r from-yellow-500/10 to-yellow-600/10 border border-yellow-500/50 p-4 rounded-lg">
+                <div className="bg-linear-to-r from-yellow-500/10 to-yellow-600/10 border border-yellow-500/50 p-4 rounded-lg">
                   <p className="text-yellow-400 font-bold text-lg">
                     {sentimentCounts.neutral}
                   </p>
                   <p className="text-slate-300">Neutral Articles</p>
                 </div>
 
-                <div className="bg-gradient-to-r from-red-500/10 to-red-600/10 border border-red-500/50 p-4 rounded-lg">
+                <div className="bg-linear-to-r from-red-500/10 to-red-600/10 border border-red-500/50 p-4 rounded-lg">
                   <p className="text-red-400 font-bold text-lg">
                     {sentimentCounts.negative}
                   </p>

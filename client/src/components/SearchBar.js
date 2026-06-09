@@ -33,7 +33,7 @@ export default function SearchBar({ onSearch }) {
 
         <button
           type="submit"
-          className="px-6 py-4 text-blue-400 hover:text-blue-300 transition"
+          className="px-6 py-4 text-blue-400 hover:text-blue-300 transition cursor-pointer"
         >
           <Search size={20} />
         </button>

@@ -3,12 +3,12 @@ import { TrendingUp, Brain, BarChart3, Zap } from "lucide-react";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-slate-950 via-blue-950 to-slate-950 text-white">
+    <main className="min-h-screen bg-linear-to-b from-slate-950 via-blue-950 to-slate-950 text-white">
 
       {/* Navbar */}
       <nav className="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-slate-800/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
-          <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+          <h1 className="text-2xl sm:text-3xl font-bold bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
             FinSight
           </h1>
 
@@ -22,7 +22,7 @@ export default function Home() {
 
             <Link
               href="/register"
-              className="px-3 sm:px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 transition font-medium text-sm sm:text-base"
+              className="px-3 sm:px-4 py-2 rounded-lg bg-linear-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 transition font-medium text-sm sm:text-base"
             >
               Register
             </Link>
@@ -34,7 +34,7 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-32 text-center">
         <div className="animate-fade-in-up">
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-            <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
               AI-Powered Financial
             </span>
             <br />
@@ -47,7 +47,7 @@ export default function Home() {
 
           <Link
             href="/register"
-            className="inline-block bg-gradient-to-r from-blue-600 to-blue-500 px-8 sm:px-10 py-3 sm:py-4 rounded-lg text-lg font-semibold hover:from-blue-700 hover:to-blue-600 transform hover:scale-105 transition"
+            className="inline-block bg-linear-to-r from-blue-600 to-blue-500 px-8 sm:px-10 py-3 sm:py-4 rounded-lg text-lg font-semibold hover:from-blue-700 hover:to-blue-600 transform hover:scale-105 transition"
           >
             Get Started Free →
           </Link>
@@ -118,7 +118,7 @@ export default function Home() {
 
       {/* CTA Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 text-center">
-        <div className="bg-gradient-to-r from-blue-900 to-purple-900 rounded-2xl p-8 sm:p-16 border border-blue-800/50">
+        <div className="bg-linear-to-r from-blue-900 to-purple-900 rounded-2xl p-8 sm:p-16 border border-blue-800/50">
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
             Ready to Master Financial Markets?
           </h2>
@@ -127,7 +127,7 @@ export default function Home() {
           </p>
           <Link
             href="/register"
-            className="inline-block bg-gradient-to-r from-blue-600 to-blue-500 px-8 py-4 rounded-lg font-semibold hover:from-blue-700 hover:to-blue-600 transform hover:scale-105 transition"
+            className="inline-block bg-linear-to-r from-blue-600 to-blue-500 px-8 py-4 rounded-lg font-semibold hover:from-blue-700 hover:to-blue-600 transform hover:scale-105 transition"
           >
             Create Free Account
           </Link>

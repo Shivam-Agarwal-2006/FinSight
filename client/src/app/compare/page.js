@@ -134,7 +134,7 @@ export default function ComparePage() {
             : [];
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-slate-950 via-blue-950 to-slate-950 text-white">
+        <div className="min-h-screen bg-linear-to-b from-slate-950 via-blue-950 to-slate-950 text-white">
 
             {/* Header */}
             <header className="sticky top-0 z-40 backdrop-blur-md bg-slate-950/80 border-b border-slate-800/50">
@@ -193,7 +193,7 @@ export default function ComparePage() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-gradient-to-r from-blue-600 to-blue-500 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-blue-600 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            className="w-full bg-linear-to-r from-blue-600 to-blue-500 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-blue-600 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                         >
                             <Zap size={18} />
                             Compare
@@ -221,7 +221,7 @@ export default function ComparePage() {
                         {/* Chart */}
                         <div className="card mb-8">
                             <h2 className="text-xl sm:text-2xl font-bold mb-6">
-                                📊 Sentiment Comparison Chart
+                                Sentiment Comparison Chart
                             </h2>
 
                             <div className="w-full overflow-x-auto">
@@ -248,15 +248,15 @@ export default function ComparePage() {
                                 </h3>
 
                                 <div className="grid grid-cols-3 gap-3 mb-6">
-                                    <div className="bg-gradient-to-br from-green-500/10 to-green-600/10 border border-green-500/50 p-4 rounded-lg text-center">
+                                    <div className="bg-linear-to-br from-green-500/10 to-green-600/10 border border-green-500/50 p-4 rounded-lg text-center">
                                         <p className="text-green-400 text-2xl font-bold">{resultA.counts.positive}</p>
                                         <p className="text-slate-400 text-sm">Positive</p>
                                     </div>
-                                    <div className="bg-gradient-to-br from-yellow-500/10 to-yellow-600/10 border border-yellow-500/50 p-4 rounded-lg text-center">
+                                    <div className="bg-linear-to-br from-yellow-500/10 to-yellow-600/10 border border-yellow-500/50 p-4 rounded-lg text-center">
                                         <p className="text-yellow-400 text-2xl font-bold">{resultA.counts.neutral}</p>
                                         <p className="text-slate-400 text-sm">Neutral</p>
                                     </div>
-                                    <div className="bg-gradient-to-br from-red-500/10 to-red-600/10 border border-red-500/50 p-4 rounded-lg text-center">
+                                    <div className="bg-linear-to-br from-red-500/10 to-red-600/10 border border-red-500/50 p-4 rounded-lg text-center">
                                         <p className="text-red-400 text-2xl font-bold">{resultA.counts.negative}</p>
                                         <p className="text-slate-400 text-sm">Negative</p>
                                     </div>
@@ -274,15 +274,15 @@ export default function ComparePage() {
                                 </h3>
 
                                 <div className="grid grid-cols-3 gap-3 mb-6">
-                                    <div className="bg-gradient-to-br from-green-500/10 to-green-600/10 border border-green-500/50 p-4 rounded-lg text-center">
+                                    <div className="bg-linear-to-br from-green-500/10 to-green-600/10 border border-green-500/50 p-4 rounded-lg text-center">
                                         <p className="text-green-400 text-2xl font-bold">{resultB.counts.positive}</p>
                                         <p className="text-slate-400 text-sm">Positive</p>
                                     </div>
-                                    <div className="bg-gradient-to-br from-yellow-500/10 to-yellow-600/10 border border-yellow-500/50 p-4 rounded-lg text-center">
+                                    <div className="bg-linear-to-br from-yellow-500/10 to-yellow-600/10 border border-yellow-500/50 p-4 rounded-lg text-center">
                                         <p className="text-yellow-400 text-2xl font-bold">{resultB.counts.neutral}</p>
                                         <p className="text-slate-400 text-sm">Neutral</p>
                                     </div>
-                                    <div className="bg-gradient-to-br from-red-500/10 to-red-600/10 border border-red-500/50 p-4 rounded-lg text-center">
+                                    <div className="bg-linear-to-br from-red-500/10 to-red-600/10 border border-red-500/50 p-4 rounded-lg text-center">
                                         <p className="text-red-400 text-2xl font-bold">{resultB.counts.negative}</p>
                                         <p className="text-slate-400 text-sm">Negative</p>
                                     </div>
