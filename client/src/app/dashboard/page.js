@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import api from "../../services/api";
-
+import Link from "next/link";
 import SearchBar from "../../components/SearchBar";
 import NewsCard from "../../components/NewsCard";
 import { useRouter } from "next/navigation";
@@ -25,7 +25,10 @@ export default function Dashboard() {
       try {
         const token =
           localStorage.getItem("token");
-
+        if (!token) {
+          router.push("/login");
+          return;
+        }
         const res = await api.get(
           "/auth/me",
           {
@@ -39,6 +42,7 @@ export default function Dashboard() {
 
       } catch (error) {
         console.log(error);
+        router.push("/login");
       }
     };
 
@@ -59,7 +63,7 @@ export default function Dashboard() {
       }
     };
     fetchWatchlist();
-  }, []);
+  }, [router]);
   const logout = () => {
     localStorage.removeItem("token");
     router.push("/login");
@@ -128,6 +132,9 @@ export default function Dashboard() {
     }
   };
   const addToWatchlist = async () => {
+    if (watchlist.includes(currentCompany)) {
+      return;
+    }
     try {
       const token = localStorage.getItem("token");
 
@@ -205,12 +212,20 @@ export default function Dashboard() {
           Welcome {user.name}
         </p>
       )}
-      <button
-        onClick={logout}
-        className="px-4 py-2 bg-red-600 rounded-lg mb-6"
-      >
-        Logout
-      </button>
+      <div className="flex gap-3 mb-6">
+        <Link href="/compare">
+          <button className="px-4 py-2 bg-purple-600 rounded-lg hover:bg-purple-700">
+            Compare Companies
+          </button>
+        </Link>
+
+        <button
+          onClick={logout}
+          className="px-4 py-2 bg-red-600 rounded-lg hover:bg-red-700"
+        >
+          Logout
+        </button>
+      </div>
       {watchlist.length > 0 && (
         <div className="bg-slate-900 p-6 rounded-xl mb-8">
           <h2 className="text-2xl font-bold mb-4">
@@ -241,6 +256,20 @@ export default function Dashboard() {
       <SearchBar
         onSearch={searchCompany}
       />
+      {!loading &&
+        articles.length === 0 &&
+        !summary && (
+          <div className="bg-slate-900 p-8 rounded-xl text-center">
+            <h2 className="text-2xl font-bold mb-2">
+              Search a Company
+            </h2>
+
+            <p className="text-slate-400">
+              Enter a company name to view news,
+              sentiment analysis and AI insights.
+            </p>
+          </div>
+        )}
       {currentCompany && (
         <button
           onClick={addToWatchlist}
@@ -250,7 +279,26 @@ export default function Dashboard() {
         </button>
       )}
       {loading && (
-        <p>Loading news...</p>
+        <div className="bg-slate-900 p-6 rounded-xl mb-8">
+          <h2 className="text-xl font-semibold text-blue-400">
+            Analyzing market sentiment...
+          </h2>
+
+          <p className="text-slate-400 mt-2">
+            Fetching news, generating AI summary, and running FinBERT analysis.
+          </p>
+        </div>
+      )}
+      {currentCompany && (
+        <div className="mb-6">
+          <h2 className="text-4xl font-bold">
+            {currentCompany.toUpperCase()}
+          </h2>
+
+          <p className="text-slate-400 mt-2">
+            Financial Research Dashboard
+          </p>
+        </div>
       )}
       {summary && (
         <div className="bg-slate-900 p-6 rounded-xl mb-8">
