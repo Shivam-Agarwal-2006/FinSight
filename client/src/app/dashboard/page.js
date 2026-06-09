@@ -43,9 +43,31 @@ export default function Dashboard() {
       const res = await api.get(
         `/news/${company}`
       );
-
-      setArticles(res.data);
-
+      const articlesWithSentiment = await Promise.all(
+        res.data.map(async (article) => {
+          try {
+            const sentimentRes = await api.post(
+              "/sentiment",
+              {
+                text: article.title + " " + (article.description || ""),
+              }
+            );
+            // ML service returns array like [{"label": "positive", "score": 0.95}]
+            const sentimentLabel = sentimentRes.data[0]?.label || "neutral";
+            return {
+              ...article,
+              sentiment: sentimentLabel.toLowerCase(),
+            };
+          } catch (error) {
+            console.log(error);
+            return {
+              ...article,
+              sentiment: "neutral",
+            };
+          }
+        })
+      );
+      setArticles(articlesWithSentiment);
     } catch (error) {
       console.log(error);
     } finally {
@@ -80,6 +102,7 @@ export default function Dashboard() {
           <NewsCard
             key={index}
             article={article}
+            sentiment={article.sentiment}
           />
         ))}
 
