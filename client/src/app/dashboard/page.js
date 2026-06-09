@@ -5,6 +5,7 @@ import api from "../../services/api";
 import Link from "next/link";
 import SearchBar from "../../components/SearchBar";
 import NewsCard from "../../components/NewsCard";
+import tickerMap from "../../utils/tickerMap";
 import { useRouter } from "next/navigation";
 import {
   PieChart,
@@ -20,6 +21,8 @@ export default function Dashboard() {
   const [summary, setSummary] = useState("");
   const [watchlist, setWatchlist] = useState([]);
   const [currentCompany, setCurrentCompany] = useState("");
+  const [stockData, setStockData] = useState(null);
+  const [currentTicker, setCurrentTicker] = useState("");
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -69,14 +72,33 @@ export default function Dashboard() {
     router.push("/login");
   };
   const searchCompany = async (company) => {
+    const ticker =
+      tickerMap[company.toLowerCase()] ||
+      company.toUpperCase();
+
+    setCurrentTicker(ticker);
     try {
       setCurrentCompany(company);
+      setStockData(null);
       setLoading(true);
       setSummary("");
       setArticles([]);
 
+      // Fetch stock data
+      try {
+        const stockRes = await api.get(
+          `/stock/${ticker}`
+        );
+
+        setStockData(stockRes.data);
+      } catch (error) {
+        console.log("Stock data unavailable", error);
+      }
+
+      // Fetch news
       const res = await api.get(`/news/${company}`);
 
+      // Analyze sentiment
       const articlesWithSentiment = await Promise.all(
         res.data.map(async (article) => {
           try {
@@ -110,7 +132,8 @@ export default function Dashboard() {
       );
 
       setArticles(articlesWithSentiment);
-      console.log(articlesWithSentiment);
+
+      // Generate summary
       const combinedText = articlesWithSentiment
         .map(
           (article) =>
@@ -298,6 +321,53 @@ export default function Dashboard() {
           <p className="text-slate-400 mt-2">
             Financial Research Dashboard
           </p>
+        </div>
+      )}
+      {stockData && (
+        <div className="bg-slate-900 p-6 rounded-xl mb-8">
+          <h2 className="text-2xl font-bold mb-4">
+            Stock Overview: {stockData.symbol}
+          </h2>
+
+          <div className="grid md:grid-cols-4 gap-4">
+            <div className="bg-slate-800 p-4 rounded-lg">
+              <p className="text-slate-400">Current Price</p>
+              <p className="text-2xl font-bold">
+                ${stockData.quote.current}
+              </p>
+            </div>
+
+            <div className="bg-slate-800 p-4 rounded-lg">
+              <p className="text-slate-400">Change</p>
+              <p
+                className={`text-2xl font-bold ${stockData.quote.change >= 0
+                  ? "text-green-400"
+                  : "text-red-400"
+                  }`}
+              >
+                {stockData.quote.change}
+              </p>
+            </div>
+
+            <div className="bg-slate-800 p-4 rounded-lg">
+              <p className="text-slate-400">% Change</p>
+              <p
+                className={`text-2xl font-bold ${stockData.quote.percentChange >= 0
+                  ? "text-green-400"
+                  : "text-red-400"
+                  }`}
+              >
+                {stockData.quote.percentChange}%
+              </p>
+            </div>
+
+            <div className="bg-slate-800 p-4 rounded-lg">
+              <p className="text-slate-400">Previous Close</p>
+              <p className="text-2xl font-bold">
+                ${stockData.quote.previousClose}
+              </p>
+            </div>
+          </div>
         </div>
       )}
       {summary && (
