@@ -4,7 +4,6 @@ import { useState } from "react";
 
 export default function SearchBar({ onSearch }) {
   const [company, setCompany] = useState("");
-
   const handleSubmit = (e) => {
     e.preventDefault();
 

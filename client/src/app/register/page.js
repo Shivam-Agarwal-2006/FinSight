@@ -27,7 +27,7 @@ export default function Register() {
       );
 
       alert(res.data.message);
-
+      router.push("/dashboard");
     } catch (err) {
       alert(
         err.response?.data?.message ||

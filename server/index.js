@@ -7,6 +7,7 @@ const authRoutes = require("./routes/authRoutes");
 const newsRoutes = require("./routes/newsRoutes");
 const watchlistRoutes = require("./routes/watchlistRoutes");
 const sentimentRoutes = require("./routes/sentimentRoutes");
+const summaryRoutes = require("./routes/summaryRoutes");    
 const app = express();
 
 connectDB();
@@ -17,6 +18,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/news", newsRoutes);
 app.use("/api/watchlist", watchlistRoutes);
 app.use("/api/sentiment", sentimentRoutes);
+app.use("/api/summary", summaryRoutes);
 app.get("/", (req, res) => {
     res.json({
         message: "FinSight API Running",
