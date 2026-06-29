@@ -5,7 +5,7 @@ const generateSummary = async (req, res) => {
     const { text } = req.body;
 
     const response = await axios.post(
-      "http://localhost:8000/summary",
+      `${process.env.ML_SERVICE_URL}/summary`,
       { text }
     );
 

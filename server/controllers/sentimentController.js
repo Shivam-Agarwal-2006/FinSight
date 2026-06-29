@@ -5,7 +5,7 @@ const analyzeSentiment = async (req, res) => {
     const { text } = req.body;
 
     const response = await axios.post(
-      "http://localhost:8000/sentiment",
+      `${process.env.ML_SERVICE_URL}/sentiment`,
       {
         text,
       }
